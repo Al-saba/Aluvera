@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Plant Monitoring Dashboard</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <h1>Plant Monitoring Dashboard</h1>
+    <div class="status-row">
+      <span id="connectionDot" class="dot dot-off"></span>
+      <span id="connectionText">Not connected</span>
+      <span class="sep">&middot;</span>
+      <span id="recordCount">0 records</span>
+      <span class="sep">&middot;</span>
+      <span id="lastUpdated">Never updated</span>
+    </div>
+  </header>
+
+  <nav id="mainNav" class="mainnav hidden">
+    <button class="navbtn active" data-view="overview">Overview</button>
+    <button class="navbtn" data-view="data">Data (CSV)</button>
+    <button class="navbtn" data-view="ml">ML</button>
+    <button class="navbtn navbtn-right" data-view="settings">Settings</button>
+  </nav>
+
+  <main>
+
+    <!-- ============ SETTINGS / CONNECTION VIEW ============ -->
+    <section id="settingsView" class="view">
+      <section id="configPanel" class="panel">
+        <h2>Firebase Connection</h2>
+        <p class="hint">Enter your Firebase Realtime Database credentials, or edit them directly in <code>config.js</code>.</p>
+        <div class="form-grid">
+          <label>API Key
+            <input type="text" id="apiKey" placeholder="AIzaSy..." />
+          </label>
+          <label>Database URL
+            <input type="text" id="databaseURL" placeholder="https://your-project.firebaseio.com" />
+          </label>
+          <label>Project ID
+            <input type="text" id="projectId" placeholder="your-project-id" />
+          </label>
+          <label>Data path
+            <input type="text" id="dataPath" placeholder="plant_data" value="plant_data" />
+          </label>
+        </div>
+        <label class="checkbox-row">
+          <input type="checkbox" id="rememberMe" checked />
+          Remember these settings on this device, and connect automatically next time
+        </label>
+        <div class="actions">
+          <button id="connectBtn">Connect</button>
+          <button id="disconnectBtn" class="secondary" disabled>Disconnect</button>
+          <button id="forgetBtn" class="secondary">Forget saved settings</button>
+        </div>
+        <p id="configError" class="error"></p>
+      </section>
+    </section>
+
+    <!-- ============ OVERVIEW: chart grid ============ -->
+    <section id="overviewView" class="view hidden">
+      <div class="panel-header loose">
+        <h2>Sensor Panels</h2>
+        <label class="inline-label">
+          Show last
+          <select id="limitSelect">
+            <option value="200">200 records</option>
+            <option value="1000" selected>1,000 records</option>
+            <option value="5000">5,000 records</option>
+            <option value="0">All records</option>
+          </select>
+        </label>
+      </div>
+      <div id="overviewEmpty" class="empty-state">No numeric sensor fields found yet.</div>
+      <div id="chartGrid" class="chart-grid"></div>
+    </section>
+
+    <!-- ============ DETAIL: single full chart ============ -->
+    <section id="detailView" class="view hidden">
+      <button id="backBtn" class="secondary back-btn">&larr; Back to overview</button>
+      <div class="panel">
+        <h2 id="detailTitle">&mdash;</h2>
+        <div class="detail-chart-wrap">
+          <canvas id="detailCanvas"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DATA: full table + CSV export ============ -->
+    <section id="dataView" class="view hidden">
+      <div class="panel">
+        <div class="panel-header">
+          <h2>All Data</h2>
+          <button id="exportBtn" class="secondary" disabled>Export CSV</button>
+        </div>
+        <div id="tableEmpty" class="empty-state">Connect to Firebase to see plant sensor data here.</div>
+        <div class="table-wrap">
+          <table id="dataTable" class="hidden">
+            <thead><tr id="tableHead"></tr></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ML: placeholder for your own model/code ============ -->
+    <section id="mlView" class="view hidden">
+      <div class="panel">
+        <h2>Machine Learning</h2>
+        <p class="hint">
+          This tab is a placeholder. Wire up your trained model here later &mdash;
+          the current dataset is always available in the browser console as
+          <code>PlantDashboard.getRecords()</code>, and you can register a callback
+          with <code>PlantDashboard.onUpdate(fn)</code> to run your own code every
+          time new data arrives.
+        </p>
+        <div id="mlContent"><!-- add your ML UI / results here --></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Reads directly from your Firebase Realtime Database. No demo or sample data included. Saved settings stay only in this browser, on this device.</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
