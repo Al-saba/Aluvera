@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Plant Monitoring Dashboard</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <h1>Plant Monitoring Dashboard</h1>
+    <div class="status-row">
+      <span id="connectionDot" class="dot dot-off"></span>
+      <span id="connectionText">Not connected</span>
+      <span class="sep">&middot;</span>
+      <span id="recordCount">0 records</span>
+      <span class="sep">&middot;</span>
+      <span id="lastUpdated">Never updated</span>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="configPanel" class="panel">
+      <h2>Firebase Connection</h2>
+      <p class="hint">Enter your Firebase Realtime Database credentials, or edit them directly in <code>config.js</code>.</p>
+      <div class="form-grid">
+        <label>API Key
+          <input type="text" id="apiKey" placeholder="AIzaSy..." />
+        </label>
+        <label>Database URL
+          <input type="text" id="databaseURL" placeholder="https://your-project.firebaseio.com" />
+        </label>
+        <label>Project ID
+          <input type="text" id="projectId" placeholder="your-project-id" />
+        </label>
+        <label>Data path
+          <input type="text" id="dataPath" placeholder="plant_data" value="plant_data" />
+        </label>
+      </div>
+      <div class="actions">
+        <button id="connectBtn">Connect</button>
+        <button id="disconnectBtn" class="secondary" disabled>Disconnect</button>
+      </div>
+      <p id="configError" class="error"></p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Live Sensor Data</h2>
+        <button id="exportBtn" class="secondary" disabled>Export CSV</button>
+      </div>
+      <div id="emptyState" class="empty-state">
+        Connect to Firebase to see plant sensor data here.
+      </div>
+      <div class="table-wrap">
+        <table id="dataTable" class="hidden">
+          <thead><tr id="tableHead"></tr></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Reads directly from your Firebase Realtime Database. No demo or sample data included.</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
